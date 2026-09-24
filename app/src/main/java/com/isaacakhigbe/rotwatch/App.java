@@ -1,9 +1,6 @@
 package com.isaacakhigbe.rotwatch;
 
 import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 
 public class App {
 
@@ -15,11 +12,8 @@ public class App {
 
         String url = args[0];
         URI uri = URI.create(url);
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder(uri).build();
-        HttpResponse<Void> response = client.send(request, HttpResponse.BodyHandlers.discarding());
-        int statusCode = response.statusCode();
-
+        LinkChecker linkChecker = new LinkChecker();
+        int statusCode = linkChecker.check(uri);
         System.out.println(statusCode + " " + url);
     }
 }
