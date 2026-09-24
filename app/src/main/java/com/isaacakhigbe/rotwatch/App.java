@@ -1,4 +1,4 @@
-package org.example;
+package com.isaacakhigbe.rotwatch;
 
 import java.net.URI;
 import java.net.http.HttpClient;
