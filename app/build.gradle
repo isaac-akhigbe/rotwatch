@@ -41,7 +41,7 @@ tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
     testLogging {
-        events "failed"
+        events "failed", "skipped", "passed"
         exceptionFormat = "full"
     }
 }
