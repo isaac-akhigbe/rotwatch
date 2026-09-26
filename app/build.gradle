@@ -34,10 +34,14 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = 'org.example.App'
+    mainClass = 'com.isaacakhigbe.rotwatch.App'
 }
 
 tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+    testLogging {
+        events "failed"
+        exceptionFormat = "full"
+    }
 }
