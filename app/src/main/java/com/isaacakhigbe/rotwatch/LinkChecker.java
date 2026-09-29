@@ -4,13 +4,18 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.io.IOException;
 
 public class LinkChecker {
     private final HttpClient client = HttpClient.newHttpClient();
 
     public CheckResult check(URI uri) throws Exception {
-        HttpRequest request = HttpRequest.newBuilder(uri).build();
-        HttpResponse<Void> response = client.send(request, HttpResponse.BodyHandlers.discarding());
-        return new Response(response.statusCode());
+        try {
+            HttpRequest request = HttpRequest.newBuilder(uri).build();
+            HttpResponse<Void> response = client.send(request, HttpResponse.BodyHandlers.discarding());
+            return new Response(response.statusCode());
+        } catch (IOException e) {
+            return new Failure(e.toString());
+        }
     }
 }

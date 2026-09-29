@@ -16,7 +16,7 @@ public class App {
         CheckResult result = linkChecker.check(uri);
         switch (result) {
             case Response(int statusCode) -> System.out.println(statusCode + " " + url);
-            case Failure(String errMessage) -> System.out.println("ERROR" + errMessage + " " + url);
+            case Failure(String errMessage) -> System.out.println("ERROR " + errMessage + " " + url);
         }
     }
 }
