@@ -13,7 +13,10 @@ public class App {
         String url = args[0];
         URI uri = URI.create(url);
         LinkChecker linkChecker = new LinkChecker();
-        int statusCode = linkChecker.check(uri);
-        System.out.println(statusCode + " " + url);
+        CheckResult result = linkChecker.check(uri);
+        switch (result) {
+            case Response(int statusCode) -> System.out.println(statusCode + " " + url);
+            case Failure(String errMessage) -> System.out.println("ERROR" + errMessage + " " + url);
+        }
     }
 }

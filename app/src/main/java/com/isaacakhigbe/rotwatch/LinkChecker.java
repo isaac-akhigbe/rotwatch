@@ -8,9 +8,9 @@ import java.net.http.HttpResponse;
 public class LinkChecker {
     private final HttpClient client = HttpClient.newHttpClient();
 
-    public int check(URI uri) throws Exception {
+    public CheckResult check(URI uri) throws Exception {
         HttpRequest request = HttpRequest.newBuilder(uri).build();
         HttpResponse<Void> response = client.send(request, HttpResponse.BodyHandlers.discarding());
-        return response.statusCode();
+        return new Response(response.statusCode());
     }
 }

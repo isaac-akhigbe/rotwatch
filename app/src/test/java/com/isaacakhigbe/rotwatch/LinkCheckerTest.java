@@ -23,7 +23,7 @@ class LinkCheckerTest {
         server.stop(0);
     }
 
-    private static int getStatusCode(String url) throws Exception {
+    private static CheckResult checkUrl(String url) throws Exception {
         URI uri = URI.create(url);
         LinkChecker linkChecker = new LinkChecker();
         return linkChecker.check(uri);
@@ -39,13 +39,11 @@ class LinkCheckerTest {
 
     @Test
     void returns404ForMissingPage() throws Exception {
-        assertEquals(404, getStatusCode(serve("/missing", 404)));
+        assertEquals(new Response(404), checkUrl(serve("/missing", 404)));
     }
 
     @Test
     void returns200ForExistingPage() throws Exception {
-        assertEquals(200, getStatusCode(serve("/about", 200)));
+        assertEquals(new Response(200), checkUrl(serve("/about", 200)));
     }
 }
-
-    
