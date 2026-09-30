@@ -7,7 +7,8 @@ import java.net.http.HttpResponse;
 import java.io.IOException;
 
 public class LinkChecker {
-    private final HttpClient client = HttpClient.newHttpClient();
+    // Deliberately make the client to not follow redirection
+    private final HttpClient client = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.NEVER).build();
 
     public CheckResult check(URI uri) throws Exception {
         try {
