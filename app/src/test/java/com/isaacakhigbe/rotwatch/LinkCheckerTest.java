@@ -54,4 +54,18 @@ class LinkCheckerTest {
         CheckResult result = checkUrl(url);
         assertInstanceOf(Failure.class, result);
     }
+
+    @Test
+    void reportRedirectInsteadOfFollowing() throws Exception {
+        String path = "/old";
+        server.createContext(path, exchange -> {
+            exchange.getResponseHeaders().add("Location", "/new");
+            exchange.sendResponseHeaders(301, -1);
+            exchange.close();
+        });
+        serve("/new", 200);
+
+        String url = "http://localhost:" + server.getAddress().getPort() + path;
+        assertEquals(new Response(301), checkUrl(url));
+    }
 }
