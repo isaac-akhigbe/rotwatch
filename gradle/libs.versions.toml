@@ -3,8 +3,10 @@
 
 [versions]
 guava = "33.5.0-jre"
+jsoup = "1.23.2"
 junit-jupiter = "6.0.1"
 
 [libraries]
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
+jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
