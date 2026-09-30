@@ -46,4 +46,12 @@ class LinkCheckerTest {
     void returns200ForExistingPage() throws Exception {
         assertEquals(new Response(200), checkUrl(serve("/about", 200)));
     }
+
+    @Test
+    void returnsFailureWhenNothingIsListening() throws Exception {
+        String url = serve("/about", 200);
+        server.stop(0);
+        CheckResult result = checkUrl(url);
+        assertInstanceOf(Failure.class, result);
+    }
 }
