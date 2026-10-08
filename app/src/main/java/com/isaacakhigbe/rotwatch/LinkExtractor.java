@@ -8,12 +8,12 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 public class LinkExtractor {
-    public List<String> extract(String html) {
-        Document document = Jsoup.parse(html);
+    public List<String> extract(String html, String baseUrl) {
+        Document document = Jsoup.parse(html, baseUrl);
         List<String> urls = new ArrayList<>();
         Elements links = document.select("a[href]");
         for (Element link : links) {
-            urls.add(link.attr("href"));
+            urls.add(link.absUrl("href"));
         }
         return urls;
     }
