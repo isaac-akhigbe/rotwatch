@@ -23,4 +23,22 @@ class LinkExtractorTest {
                 "https://isaacakhigbe.xyz/index.html");
         assertEquals(expected, links);
     }
+
+    @Test
+    void removesFragmentsAndDuplicates() {
+        LinkExtractor linkExtractor = new LinkExtractor();
+        String html = """
+                <a href="/#home">Home</a>
+                <a href="/#articles">Articles</a>
+                <a href="/blog#comments">Comments</a>
+                <a href="https://github.com/isaac">GitHub</a>
+                <a href="https://github.com/isaac">GitHub</a>
+                """;
+        String baseUrl = "https://isaacakhigbe.xyz/blog/post";
+        List<String> links = linkExtractor.extract(html, baseUrl);
+        List<String> expected = List.of("https://isaacakhigbe.xyz/",
+                "https://isaacakhigbe.xyz/blog",
+                "https://github.com/isaac");
+        assertEquals(expected, links);
+    }
 }
