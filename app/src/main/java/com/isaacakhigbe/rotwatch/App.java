@@ -1,6 +1,7 @@
 package com.isaacakhigbe.rotwatch;
 
 import java.net.URI;
+import java.util.List;
 
 public class App {
 
@@ -12,11 +13,24 @@ public class App {
 
         String url = args[0];
         URI uri = URI.create(url);
+
+        PageFetcher pageFetcher = new PageFetcher();
+        String bodyHtml = pageFetcher.fetch(uri);
+
+        LinkExtractor linkExtractor = new LinkExtractor();
+        List<String> links = linkExtractor.extract(bodyHtml, url);
+
         LinkChecker linkChecker = new LinkChecker();
-        CheckResult result = linkChecker.check(uri);
-        switch (result) {
-            case Response(int statusCode) -> System.out.println(statusCode + " " + url);
-            case Failure(String errMessage) -> System.out.println("ERROR " + errMessage + " " + url);
+        for (String link : links) {
+            URI linkUri = URI.create(link);
+
+            CheckResult result = linkChecker.check(linkUri);
+
+            switch (result) {
+                case Response(int statusCode) -> System.out.println(statusCode + " " + link);
+                case Failure(String errMessage) -> System.out.println("ERROR " + errMessage + " " + link);
+            }
         }
+
     }
 }
