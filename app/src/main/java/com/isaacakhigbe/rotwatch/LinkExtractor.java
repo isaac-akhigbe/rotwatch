@@ -11,9 +11,12 @@ public class LinkExtractor {
     public List<String> extract(String html, String baseUrl) {
         Document document = Jsoup.parse(html, baseUrl);
         List<String> urls = new ArrayList<>();
-        Elements links = document.select("a[href]");
-        for (Element link : links) {
-            urls.add(link.absUrl("href"));
+        Elements elementLinks = document.select("a[href]");
+        for (Element elementLink : elementLinks) {
+            String link = elementLink.absUrl("href");
+            if (link.startsWith("http://") || link.startsWith("https://")) {
+                urls.add(link);
+            }
         }
         return urls;
     }
