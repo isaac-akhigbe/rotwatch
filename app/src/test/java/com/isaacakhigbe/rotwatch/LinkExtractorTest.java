@@ -5,40 +5,54 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class LinkExtractorTest {
-    @Test
-    void extractsLinksFromMessyHtml() {
-        LinkExtractor linkExtractor = new LinkExtractor();
-        String html = """
-                <a href="/about">About</a>
-                <a href='https://github.com/isaac'>GitHub</a>
-                <A HREF="/blog" class="nav">Blog</A>
-                <!-- <a href="/secret">old link</a> -->
-                <a href="contact">Contact</a>
-                <a href="../index.html">Home</a>
-                """;
-        String baseUrl = "https://isaacakhigbe.xyz/blog/post";
-        List<String> links = linkExtractor.extract(html, baseUrl);
-        List<String> expected = List.of("https://isaacakhigbe.xyz/about", "https://github.com/isaac",
-                "https://isaacakhigbe.xyz/blog", "https://isaacakhigbe.xyz/blog/contact",
-                "https://isaacakhigbe.xyz/index.html");
-        assertEquals(expected, links);
-    }
+        @Test
+        void extractsLinksFromMessyHtml() {
+                LinkExtractor linkExtractor = new LinkExtractor();
+                String html = """
+                                <a href="/about">About</a>
+                                <a href='https://github.com/isaac'>GitHub</a>
+                                <A HREF="/blog" class="nav">Blog</A>
+                                <!-- <a href="/secret">old link</a> -->
+                                <a href="contact">Contact</a>
+                                <a href="../index.html">Home</a>
+                                """;
+                String baseUrl = "https://isaacakhigbe.xyz/blog/post";
+                List<String> links = linkExtractor.extract(html, baseUrl);
+                List<String> expected = List.of("https://isaacakhigbe.xyz/about", "https://github.com/isaac",
+                                "https://isaacakhigbe.xyz/blog", "https://isaacakhigbe.xyz/blog/contact",
+                                "https://isaacakhigbe.xyz/index.html");
+                assertEquals(expected, links);
+        }
 
-    @Test
-    void removesFragmentsAndDuplicates() {
-        LinkExtractor linkExtractor = new LinkExtractor();
-        String html = """
-                <a href="/#home">Home</a>
-                <a href="/#articles">Articles</a>
-                <a href="/blog#comments">Comments</a>
-                <a href="https://github.com/isaac">GitHub</a>
-                <a href="https://github.com/isaac">GitHub</a>
-                """;
-        String baseUrl = "https://isaacakhigbe.xyz/blog/post";
-        List<String> links = linkExtractor.extract(html, baseUrl);
-        List<String> expected = List.of("https://isaacakhigbe.xyz/",
-                "https://isaacakhigbe.xyz/blog",
-                "https://github.com/isaac");
-        assertEquals(expected, links);
-    }
+        @Test
+        void removesFragmentsAndDuplicates() {
+                LinkExtractor linkExtractor = new LinkExtractor();
+                String html = """
+                                <a href="/#home">Home</a>
+                                <a href="/#articles">Articles</a>
+                                <a href="/blog#comments">Comments</a>
+                                <a href="https://github.com/isaac">GitHub</a>
+                                <a href="https://github.com/isaac">GitHub</a>
+                                """;
+                String baseUrl = "https://isaacakhigbe.xyz/blog/post";
+                List<String> links = linkExtractor.extract(html, baseUrl);
+                List<String> expected = List.of("https://isaacakhigbe.xyz/",
+                                "https://isaacakhigbe.xyz/blog",
+                                "https://github.com/isaac");
+                assertEquals(expected, links);
+        }
+
+        @Test
+        void skipsNonWebLinks() {
+                LinkExtractor linkExtractor = new LinkExtractor();
+                String html = """
+                                 <a href="mailto:isaac@example.com">Email</a>
+                                 <a href="/about">About</a>
+                                 <a href="tel:+2348000000000">Call</a>
+                                """;
+                String baseUrl = "https://isaacakhigbe.xyz/blog/post";
+                List<String> links = linkExtractor.extract(html, baseUrl);
+                List<String> expected = List.of("https://isaacakhigbe.xyz/about");
+                assertEquals(expected, links);
+        }
 }
