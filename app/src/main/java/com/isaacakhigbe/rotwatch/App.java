@@ -1,7 +1,7 @@
 package com.isaacakhigbe.rotwatch;
 
 import java.net.URI;
-import java.util.List;
+import java.util.Set;
 
 public class App {
 
@@ -14,11 +14,8 @@ public class App {
         String url = args[0];
         URI uri = URI.create(url);
 
-        PageFetcher pageFetcher = new PageFetcher();
-        String bodyHtml = pageFetcher.fetch(uri);
-
-        LinkExtractor linkExtractor = new LinkExtractor();
-        List<String> links = linkExtractor.extract(bodyHtml, url);
+        Crawler crawler = new Crawler();
+        Set<String> links = crawler.crawl(uri);
 
         LinkChecker linkChecker = new LinkChecker();
         for (String link : links) {
