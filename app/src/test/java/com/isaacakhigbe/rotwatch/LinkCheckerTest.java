@@ -68,4 +68,22 @@ class LinkCheckerTest {
         String url = "http://localhost:" + server.getAddress().getPort() + path;
         assertEquals(new Response(301), checkUrl(url));
     }
+
+    @Test
+    void sendsUserAgentHeader() throws Exception {
+        String path = "/picky";
+        server.createContext(path, exchange -> {
+            String agent = exchange.getRequestHeaders().getFirst("User-Agent");
+            if (HttpDefaults.USER_AGENT.equals(agent)) {
+                exchange.sendResponseHeaders(200, -1);
+            } else {
+                exchange.sendResponseHeaders(403, -1);
+            }
+
+            exchange.close();
+        });
+
+        String url = "http://localhost:" + server.getAddress().getPort() + path;
+        assertEquals(new Response(200), checkUrl(url));
+    }
 }

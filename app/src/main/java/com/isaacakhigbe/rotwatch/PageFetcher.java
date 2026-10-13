@@ -10,7 +10,7 @@ public class PageFetcher {
     private final HttpClient client = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.NEVER).build();
 
     public String fetch(URI uri) throws IOException, InterruptedException {
-        HttpRequest request = HttpRequest.newBuilder(uri).build();
+        HttpRequest request = HttpRequest.newBuilder(uri).header("User-Agent", HttpDefaults.USER_AGENT).build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         return response.body();
     }

@@ -12,7 +12,7 @@ public class LinkChecker {
 
     public CheckResult check(URI uri) throws Exception {
         try {
-            HttpRequest request = HttpRequest.newBuilder(uri).build();
+            HttpRequest request = HttpRequest.newBuilder(uri).header("User-Agent", HttpDefaults.USER_AGENT).build();
             HttpResponse<Void> response = client.send(request, HttpResponse.BodyHandlers.discarding());
             return new Response(response.statusCode());
         } catch (IOException e) {
