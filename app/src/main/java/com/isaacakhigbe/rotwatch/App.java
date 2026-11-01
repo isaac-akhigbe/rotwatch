@@ -2,6 +2,8 @@ package com.isaacakhigbe.rotwatch;
 
 import java.net.URI;
 import java.util.Set;
+import java.time.Instant;
+import java.time.Duration;
 
 public class App {
 
@@ -15,6 +17,7 @@ public class App {
         URI uri = URI.create(url);
 
         Crawler crawler = new Crawler();
+        Instant startTime = Instant.now();
         Set<String> links = crawler.crawl(uri);
 
         LinkChecker linkChecker = new LinkChecker();
@@ -28,6 +31,8 @@ public class App {
                 case Failure(String errMessage) -> System.out.println("ERROR " + errMessage + " " + link);
             }
         }
-
+        Instant endTime = Instant.now();
+        long diff = Duration.between(startTime, endTime).toMillis();
+        System.err.println("checked " + links.size() + " links in " + diff + "ms");
     }
 }
