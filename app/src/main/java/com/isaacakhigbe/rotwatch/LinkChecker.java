@@ -5,14 +5,17 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.io.IOException;
+import java.time.Duration;
 
 public class LinkChecker {
     // Deliberately make the client to not follow redirection
-    private final HttpClient client = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.NEVER).build();
+    private final HttpClient client = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.NEVER)
+            .connectTimeout(Duration.ofSeconds(10)).build();
 
     public CheckResult check(URI uri) throws Exception {
         try {
-            HttpRequest request = HttpRequest.newBuilder(uri).header("User-Agent", HttpDefaults.USER_AGENT).build();
+            HttpRequest request = HttpRequest.newBuilder(uri).header("User-Agent", HttpDefaults.USER_AGENT)
+                    .timeout(Duration.ofSeconds(15)).build();
             HttpResponse<Void> response = client.send(request, HttpResponse.BodyHandlers.discarding());
             return new Response(response.statusCode());
         } catch (IOException e) {

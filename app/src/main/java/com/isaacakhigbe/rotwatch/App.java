@@ -24,6 +24,7 @@ public class App {
         Crawler crawler = new Crawler();
         Instant startTime = Instant.now();
         Set<String> links = crawler.crawl(uri);
+        Instant crawlDone = Instant.now();
         List<String> linkList = List.copyOf(links);
 
         LinkChecker linkChecker = new LinkChecker();
@@ -49,6 +50,8 @@ public class App {
 
         Instant endTime = Instant.now();
         long diff = Duration.between(startTime, endTime).toMillis();
-        System.err.println("checked " + links.size() + " links in " + diff + "ms");
+        System.err.println("crawled in " + Duration.between(startTime, crawlDone).toMillis() + "ms");
+        System.err.println(
+                "checked " + links.size() + " links in " + Duration.between(crawlDone, endTime).toMillis() + "ms");
     }
 }
