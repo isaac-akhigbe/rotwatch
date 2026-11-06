@@ -5,12 +5,14 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.io.IOException;
+import java.time.Duration;
 
 public class PageFetcher {
     private final HttpClient client = HttpClient.newBuilder().followRedirects(HttpClient.Redirect.NEVER).build();
 
     public String fetch(URI uri) throws IOException, InterruptedException {
-        HttpRequest request = HttpRequest.newBuilder(uri).header("User-Agent", HttpDefaults.USER_AGENT).build();
+        HttpRequest request = HttpRequest.newBuilder(uri).header("User-Agent", HttpDefaults.USER_AGENT)
+                .timeout(Duration.ofSeconds(15)).build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         return response.body();
     }
