@@ -49,7 +49,6 @@ public class App {
         }
 
         Instant endTime = Instant.now();
-        long diff = Duration.between(startTime, endTime).toMillis();
         System.err.println("crawled in " + Duration.between(startTime, crawlDone).toMillis() + "ms");
         System.err.println(
                 "checked " + links.size() + " links in " + Duration.between(crawlDone, endTime).toMillis() + "ms");
