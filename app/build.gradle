@@ -37,6 +37,7 @@ java {
 application {
     // Define the main class for the application.
     mainClass = 'com.isaacakhigbe.rotwatch.App'
+    applicationName = 'rotwatch'
 }
 
 tasks.named('test') {
