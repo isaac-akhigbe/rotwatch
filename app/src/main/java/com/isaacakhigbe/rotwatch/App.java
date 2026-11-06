@@ -1,5 +1,6 @@
 package com.isaacakhigbe.rotwatch;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,15 @@ public class App {
 
         Crawler crawler = new Crawler();
         Instant startTime = Instant.now();
-        Set<String> links = crawler.crawl(uri);
+        Set<String> links;
+        try {
+            links = crawler.crawl(uri);
+        } catch (IOException e) {
+            System.err.println("rotwatch: cannot fetch " + url + " (" + e + ")");
+            System.exit(1);
+            return;
+        }
+
         Instant crawlDone = Instant.now();
         List<String> linkList = List.copyOf(links);
 
@@ -41,7 +50,6 @@ public class App {
                 String link = linkList.get(i);
                 CheckResult result = futures.get(i).get();
                 switch (result) {
-
                     case Response(int statusCode) -> System.out.println(statusCode + " " + link);
                     case Failure(String errMessage) -> System.out.println("ERROR " + errMessage + " " + link);
                 }
